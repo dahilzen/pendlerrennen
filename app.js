@@ -56,6 +56,10 @@ Promise.all([auto_data, bahn_data, e_bike_data, rennrad_data]).then(function(raw
     var polylineGroup;
     var markerGroup;
     var timerInterval;
+    var autoInterval;
+    var bikeInterval;
+    var rennradInterval;
+    var bahnInterval;
     var totalSeconds = 0;
 
     function draw() {
@@ -76,11 +80,14 @@ Promise.all([auto_data, bahn_data, e_bike_data, rennrad_data]).then(function(raw
         function playInterval(data, i, temp, icon) {
             var j = -1;
             var marker = L.marker([data[i].lat, data[i].lon], { icon: icon }).addTo(markerGroup);
+            var id = marker._leaflet_id;
             setInterval(function() {
                 j++;
                 if (j < data.length) {
                     marker.setLatLng([data[j].lat, data[j].lon]).update();
                     polylines[i].addLatLng([data[j].lat, data[j].lon]);
+                } else {
+                    map.removeLayer(markerGroup._layers[id])
                 }
             }, temp);
         }
@@ -109,14 +116,18 @@ Promise.all([auto_data, bahn_data, e_bike_data, rennrad_data]).then(function(raw
 
         document.getElementById('start').style.display = 'none';
         timerInterval = setInterval(setTime, 1000);
-        playInterval(auto, 0, 21.5, autoIcon);
-        playInterval(bike, 2, 19, bikeIcon);
-        playInterval(rennrad, 3, 18, rennradIcon);
-        playInterval(bahn, 1, 25.9, bahnIcon);
+        autoInterval = playInterval(auto, 0, 23, autoIcon);
+        bikeInterval = playInterval(bike, 2, 19, bikeIcon);
+        rennradInterval = playInterval(rennrad, 3, 18, rennradIcon);
+        bahnInterval = playInterval(bahn, 1, 26.5, bahnIcon);
     }
 
     function startAgain() {
         clearInterval(timerInterval);
+        clearInterval(autoInterval);
+        clearInterval(bikeInterval);
+        clearInterval(rennradInterval);
+        clearInterval(bahnInterval);
         totalSeconds = 0;
         document.getElementById('start').style.display = 'none';
         map.removeLayer(markerGroup);
