@@ -48,21 +48,20 @@ var rennrad_data = d3.csv('./data/rennrad.csv')
 
 Promise.all([auto_data, bahn_data, e_bike_data, rennrad_data]).then(function(raw_data) {
 
-    var auto = raw_data[0];
-    var bahn = raw_data[1];
-    var bike = raw_data[2];
-    var rennrad = raw_data[3];
-
-    var polylineGroup;
-    var markerGroup;
-    var timerInterval;
-    var autoInterval;
-    var bikeInterval;
-    var rennradInterval;
-    var bahnInterval;
-    var totalSeconds = 0;
-
     function draw() {
+        var auto = raw_data[0];
+        var bahn = raw_data[1];
+        var bike = raw_data[2];
+        var rennrad = raw_data[3];
+
+        var polylineGroup;
+        var markerGroup;
+        var timerInterval;
+        var autoInterval;
+        var bikeInterval;
+        var rennradInterval;
+        var bahnInterval;
+        var totalSeconds = 0;
 
         polylineGroup = L.layerGroup().addTo(map);
         markerGroup = L.layerGroup().addTo(map);
@@ -79,7 +78,8 @@ Promise.all([auto_data, bahn_data, e_bike_data, rennrad_data]).then(function(raw
 
         function playInterval(data, i, temp, icon) {
             var j = -1;
-            var marker = L.marker([data[i].lat, data[i].lon], { icon: icon }).addTo(markerGroup);
+            var marker = L.marker([data[i].lat, data[i].lon], { icon: icon });
+            marker.addTo(markerGroup);
             var id = marker._leaflet_id;
             setInterval(function() {
                 j++;
@@ -120,20 +120,20 @@ Promise.all([auto_data, bahn_data, e_bike_data, rennrad_data]).then(function(raw
         bikeInterval = playInterval(bike, 2, 19, bikeIcon);
         rennradInterval = playInterval(rennrad, 3, 18, rennradIcon);
         bahnInterval = playInterval(bahn, 1, 26.5, bahnIcon);
-    }
 
-    function startAgain() {
-        clearInterval(timerInterval);
-        clearInterval(autoInterval);
-        clearInterval(bikeInterval);
-        clearInterval(rennradInterval);
-        clearInterval(bahnInterval);
-        totalSeconds = 0;
-        document.getElementById('start').style.display = 'none';
-        map.removeLayer(markerGroup);
-        map.removeLayer(polylineGroup);
-        draw();
-    }
+        function startAgain() {
+            clearInterval(timerInterval);
+            clearInterval(autoInterval);
+            clearInterval(bikeInterval);
+            clearInterval(rennradInterval);
+            clearInterval(bahnInterval);
+            totalSeconds = 0;
+            document.getElementById('start').style.display = 'none';
+            map.removeLayer(markerGroup);
+            map.removeLayer(polylineGroup);
+            draw();
+        }
+    };
 
     document.getElementById('start').onclick = draw;
 
