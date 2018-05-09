@@ -1,0 +1,70 @@
+<html>
+
+<head>
+    <style>
+    #map {
+        height: 600px;
+    }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css" />
+    <!-- ... -->
+</head>
+
+<body>
+    <div id="map"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
+    <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
+    <script src="https://d3js.org/d3-fetch.v1.min.js"></script>
+    <script src="https://d3js.org/d3-collection.v1.min.js"></script>
+    <script src="./Polyline.encoded.js"></script>
+    <script>
+    var map = L.map('map').setView([49.1426930,9.2108790], 8);
+    L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
+        attribution: '<a href="http://www.osm.org">OpenStreetMap</a> | <a href="https://www.twitter.com/dahilzen">David Hilzendegen</a>'
+    }).addTo(map);
+    map.scrollWheelZoom.disable();
+    map.zoomControl.remove();
+
+    d3.csv('./180417_einpendler_region_POLY.csv').then(function(csv_data) {
+
+        var data = d3.nest()
+            .key(function(d) { return d.arbeitsort; })
+            .entries(csv_data);
+
+        var show = getCity(data, 'Heilbronn');
+
+        var ways = [];
+
+        for (var i = show.length - 1; i >= 0; i--) {
+            ways[i] = L.Polyline.fromEncoded(show[i].polyline, {
+                color: getColor(show),
+                opacity: .09,
+                weight: 2,
+            }).addTo(map);
+        };
+
+        function getCity(d, city) {
+            for (var i = d.length - 1; i >= 0; i--) {
+                if (d[i].key === city) {
+                    return d[i].values;
+                }
+            }
+        };
+
+        function getColor(d) {
+            var colorScale = {
+                'Heilbronn': 'red',
+                'Neckarsulm': 'blue',
+                'Abstatt': 'green',
+                'Stuttgart': 'orange',
+                'Ulm': 'brown',
+                'Pforzheim': 'violet'
+            };
+            var cityName = d[0].arbeitsort;
+            return colorScale[cityName];
+        };
+    })
+    </script>
+</body>
+
+</html>
