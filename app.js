@@ -3,6 +3,11 @@ L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x
     attribution: '<a href="http://www.osm.org">OpenStreetMap</a> | <a href="https://www.twitter.com/dahilzen">David Hilzendegen</a>'
 }).addTo(map);
 map.scrollWheelZoom.disable();
+map.dragging.disable();
+map.touchZoom.disable();
+map.doubleClickZoom.disable();
+map.boxZoom.disable();
+map.keyboard.disable();
 map.zoomControl.remove();
 
 var bikeIcon = L.icon({
