@@ -23,6 +23,11 @@
         attribution: '<a href="http://www.osm.org">OpenStreetMap</a> | <a href="https://www.twitter.com/dahilzen">David Hilzendegen</a> | Quelle: <a href="https://www.statistik-bw.de">Statistisches Landesamt BW</a> '
     }).addTo(map);
     map.scrollWheelZoom.disable();
+    map.dragging.disable();
+    map.touchZoom.disable();
+    map.doubleClickZoom.disable();
+    map.boxZoom.disable();
+    map.keyboard.disable();
     map.zoomControl.remove();
 
     d3.csv('./data/180417_einpendler_region_POLY.csv').then(function(csv_data) {
