@@ -22,12 +22,13 @@
     #start {
         width: 60px;
         height: 60px;
-        position: relative;
+        position: absolute !important;
         background: rgba(255, 255, 255, 0.9);
         border-radius: 5px;
         box-shadow: 1px 1px 1px 1px rgba(255, 255, 255, 0.9);
-        z-index: 100;
+        z-index: 900;
         top: 15px;
+        right: 15px;
         float: right;
         text-align: center;
         cursor: pointer;
@@ -39,8 +40,6 @@
         vertical-align: middle;
         top: 250px;
         left: 0px;
-        position: absolute;
-        z-index: 100;
     }
 
     #counterSec {
@@ -48,21 +47,21 @@
     }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css" />
-    <!-- ... -->
 </head>
 
 <body>
-    <div id="start">
-        <p id="startText">Hier klicken zum starten</p>
-    </div>
-    <div id="counter">
-        <p style="margin-bottom: 0px; margin-top: 5px">Min.</p>
-        <p id="counterSec" style="margin-top: 2px;">00</p>
-    </div>
     <div id="map">
+        <div id="start">
+            <p id="startText">Hier klicken zum starten</p>
+        </div>
+        <div id="counter">
+            <p style="margin-bottom: 0px; margin-top: 5px">Min.</p>
+            <p id="counterSec" style="margin-top: 2px;">00</p>
+        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
-    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
+    <script src="https://d3js.org/d3-fetch.v1.min.js"></script>
     <script src="./app.js"></script>
 </body>
 
